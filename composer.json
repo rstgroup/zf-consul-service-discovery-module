@@ -6,5 +6,32 @@
             "name": "Artur Wolny",
             "email": "artur.wolny@rst.com.pl"
         }
+    ],
+    "require": {
+        "php": "^5.6 || ^7.0",
+        "zendframework/zend-modulemanager": "^2",
+        "sensiolabs/consul-php-sdk": "dev-master"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "RstGroup\\ZfConsulServiceDiscoveryModule\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "RstGroup\\ZfConsulServiceDiscoveryModule\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "unit-tests": "phpunit --bootstrap=vendor/autoload.php tests/"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/artospaj/consul-php-sdk"
+        }
     ]
 }

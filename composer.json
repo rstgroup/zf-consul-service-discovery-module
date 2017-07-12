@@ -1,0 +1,10 @@
+{
+    "name": "rstgroup/zf-consul-service-discovery-module",
+    "description": "Module for Zend Framework that allows to register the application in Consul's Service Discovery.",
+    "authors": [
+        {
+            "name": "Artur Wolny",
+            "email": "artur.wolny@rst.com.pl"
+        }
+    ]
+}

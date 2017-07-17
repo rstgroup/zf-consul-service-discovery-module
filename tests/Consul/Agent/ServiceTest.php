@@ -20,7 +20,22 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 
         // then
         $this->assertEquals(
-            ['Name' => 'service-name'],
+            ['Name' => 'service-name', 'Id' => 'service-name'],
+            $apiDefinition
+        );
+    }
+
+    public function testServiceWithDifferentIdIsMappedToApiDefinition()
+    {
+        // given: service
+        $service = new Service('service-name', 'service-id');
+
+        // when
+        $apiDefinition = $service->getDefinition();
+
+        // then
+        $this->assertEquals(
+            ['Name' => 'service-name', 'Id' => 'service-id'],
             $apiDefinition
         );
     }
@@ -31,7 +46,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         $check = new HttpCheck('service-check', 'http://localhost/check', '15m');
 
         // given: service
-        $service = new Service('service', $check);
+        $service = new Service('service', null, $check);
 
         // when
         $definition = $service->getDefinition();
@@ -40,6 +55,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             [
                 'Name'  => 'service',
+                'Id'    => 'service',
                 'Check' => [
                     'Name'     => 'service-check',
                     'HTTP'     => 'http://localhost/check',

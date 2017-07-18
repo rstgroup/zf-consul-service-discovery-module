@@ -4,22 +4,23 @@ return [
     'rst_group'       => [
         'service_discovery' => [
             'service_name' => '',
-            'consul' => [
+            'service_id'   => null,
+            'consul'       => [
                 'url' => 'http://127.0.0.1:8500',
             ],
         ],
     ],
-    'controllers' => [
+    'controllers'     => [
         'factories' => [
             \RstGroup\ZfConsulServiceDiscoveryModule\ServiceDiscovery\ConsulController::class => \RstGroup\ZfConsulServiceDiscoveryModule\ServiceDiscovery\ConsulControllerFactory::class,
         ],
     ],
     'service_manager' => [
-        'aliases' => [
+        'aliases'   => [
             \RstGroup\ServiceDiscovery\ServiceDiscovery::class => \RstGroup\ZfConsulServiceDiscoveryModule\Consul\ServiceDiscoveryService::class,
         ],
         'factories' => [
-            \RstGroup\ZfConsulServiceDiscoveryModule\Consul\ServiceDiscoveryService::class    => \RstGroup\ZfConsulServiceDiscoveryModule\Consul\ServiceDiscoveryServiceFactory::class,
+            \RstGroup\ZfConsulServiceDiscoveryModule\Consul\ServiceDiscoveryService::class => \RstGroup\ZfConsulServiceDiscoveryModule\Consul\ServiceDiscoveryServiceFactory::class,
         ],
     ],
     'console'         => [

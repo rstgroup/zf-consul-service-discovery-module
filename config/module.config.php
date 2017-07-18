@@ -9,13 +9,17 @@ return [
             ],
         ],
     ],
+    'controllers' => [
+        'factories' => [
+            \RstGroup\ZfConsulServiceDiscoveryModule\ServiceDiscovery\ConsulController::class => \RstGroup\ZfConsulServiceDiscoveryModule\ServiceDiscovery\ConsulControllerFactory::class,
+        ],
+    ],
     'service_manager' => [
         'aliases' => [
             \RstGroup\ServiceDiscovery\ServiceDiscovery::class => \RstGroup\ZfConsulServiceDiscoveryModule\Consul\ServiceDiscoveryService::class,
         ],
         'factories' => [
             \RstGroup\ZfConsulServiceDiscoveryModule\Consul\ServiceDiscoveryService::class    => \RstGroup\ZfConsulServiceDiscoveryModule\Consul\ServiceDiscoveryServiceFactory::class,
-            \RstGroup\ZfConsulServiceDiscoveryModule\ServiceDiscovery\ConsulController::class => \RstGroup\ZfConsulServiceDiscoveryModule\ServiceDiscovery\ConsulControllerFactory::class,
         ],
     ],
     'console'         => [

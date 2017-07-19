@@ -46,7 +46,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         $check = new HttpCheck('service-check', 'http://localhost/check', '15m');
 
         // given: service
-        $service = new Service('service', null, $check);
+        $service = new Service('service', '', [], $check);
 
         // when
         $definition = $service->getDefinition();
@@ -61,6 +61,23 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
                     'HTTP'     => 'http://localhost/check',
                     'Interval' => '15m',
                 ],
+            ],
+            $definition
+        );
+    }
+
+    public function testServiceWithTagsIsMappedToApiDefinition()
+    {
+        // given: service
+        $service = new Service('service', '', ['tag#1', 'tag#2']);
+
+        // when
+        $definition = $service->getDefinition();
+
+        // then
+        $this->assertArraySubset(
+            [
+                'Tags' => ['tag#1', 'tag#2'],
             ],
             $definition
         );

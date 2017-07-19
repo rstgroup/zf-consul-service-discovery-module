@@ -18,8 +18,14 @@ class ConsulControllerTest extends TestCase
         // given: ServiceDiscovery mock
         $discoveryService = $this->getMockBuilder(ServiceDiscovery::class)->getMock();
 
+        // config from application config
+        $config = [
+            'service_name' => 'service',
+            'service_id' => 'id',
+        ];
+
         // given: controller
-        $controller = new ConsulController('service', 'id', $discoveryService);
+        $controller = new ConsulController($config, $discoveryService);
 
         // given: dispatch
         try {
@@ -33,13 +39,58 @@ class ConsulControllerTest extends TestCase
         $controller->registerAction();
     }
 
-    public function testItPassesIdOnDeregisterAction()
+    public function testItFetchesParametersFromCLI()
     {
         // given: ServiceDiscovery mock
         $discoveryService = $this->getMockBuilder(ServiceDiscovery::class)->getMock();
 
         // given: controller
-        $controller = new ConsulController('service', 'id', $discoveryService);
+        $controller = new ConsulController([], $discoveryService);
+
+        // given: dispatch
+        try {
+            $controller->dispatch(new Request([
+                'public/index.php',
+                'id' => 'id',
+                'name' => 'service',
+                'check' => true,
+                'check-url' => 'http://check/',
+                'check-interval' => '10m',
+                'check-name' => 'check',
+                'tags' => ['tag']
+            ]), new Response());
+        } catch (\Exception $exception) {}
+
+        // expect
+        $discoveryService->expects($this->once())
+            ->method('register')
+            ->with('service', [
+                'id' => 'id',
+                'check' => [
+                    'url' => 'http://check/',
+                    'name' => 'check',
+                    'interval' => '10m'
+                ],
+                'tags' => ['tag']
+            ]);
+
+        // when
+        $controller->registerAction();
+    }
+
+    public function testItPassesIdOnDeregisterAction()
+    {
+        // given: ServiceDiscovery mock
+        $discoveryService = $this->getMockBuilder(ServiceDiscovery::class)->getMock();
+
+        // config from application config
+        $config = [
+            'service_name' => 'service',
+            'service_id' => 'id',
+        ];
+
+        // given: controller
+        $controller = new ConsulController($config, $discoveryService);
 
         // given: dispatch
         try {

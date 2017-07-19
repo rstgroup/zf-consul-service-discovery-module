@@ -14,12 +14,8 @@ final class ConsulControllerFactory
     {
         $config = $container->get('config')['rst_group']['service_discovery'];
 
-        $serviceName = $config['service_name'];
-        $serviceId = isset($config['service_id']) ? $config['service_id'] : $serviceName;
-
         return new ConsulController(
-            $serviceName,
-            $serviceId,
+            $config,
             $container->get(ServiceDiscovery::class)
         );
     }

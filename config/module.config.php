@@ -7,6 +7,8 @@ return [
             'service_id'   => null,
             'consul'       => [
                 'url' => 'http://127.0.0.1:8500',
+                'tags' => null,
+                'check' => null,
             ],
         ],
     ],

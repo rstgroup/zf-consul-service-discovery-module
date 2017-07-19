@@ -21,7 +21,7 @@
         "phpunit/phpunit": "^5.7"
     },
     "suggest": {
-        "rstgroup/zf-external-config-module": "To allow saving Consul URL in the configuration during postinstall stage."
+        "rstgroup/zf-local-config-module": "To allow saving Consul URL in the configuration during postinstall stage."
     },
     "autoload": {
         "psr-4": {

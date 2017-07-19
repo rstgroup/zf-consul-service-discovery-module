@@ -41,7 +41,7 @@ return [
 ]
 ```
 
-.. and (optionally, but we strongly suggest it) - [install `rstgroup/zf-external-config-module`](https://gitlab.trans-dev.loc/devops/zf-external-config-module/blob/master/README.md#installation).
+.. and (optionally, but we strongly suggest it) - [install `rstgroup/zf-local-config-module`](https://gitlab.trans-dev.loc/devops/zf-local-config-module/blob/master/README.md#installation).
 
 ## Configuration
 

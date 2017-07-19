@@ -13,7 +13,7 @@ use Zend\Console\Response;
 
 class ConsulControllerTest extends TestCase
 {
-    public function testItPassesNameAndIdOnRegisterAction()
+    public function testItPassesParamsFromConfigurationOnRegisterAction()
     {
         // given: ServiceDiscovery mock
         $discoveryService = $this->getMockBuilder(ServiceDiscovery::class)->getMock();
@@ -21,7 +21,15 @@ class ConsulControllerTest extends TestCase
         // config from application config
         $config = [
             'service_name' => 'service',
-            'service_id' => 'id',
+            'service_id'   => 'id',
+            'consul'       => [
+                'check' => [
+                    'url'      => 'http://check/',
+                    'name'     => 'check',
+                    'interval' => '1s',
+                ],
+                'tags'  => ['tag'],
+            ],
         ];
 
         // given: controller
@@ -30,48 +38,72 @@ class ConsulControllerTest extends TestCase
         // given: dispatch
         try {
             $controller->dispatch(new Request(), new Response());
-        } catch (\Exception $exception) {}
+        } catch (\Exception $exception) {
+        }
 
         // expect
-        $discoveryService->expects($this->once())->method('register')->with('service', ['id' => 'id']);
+        $discoveryService->expects($this->once())->method('register')->with('service', [
+            'id' => 'id',
+            'check' => [
+                'url'      => 'http://check/',
+                'name'     => 'check',
+                'interval' => '1s',
+            ],
+            'tags'  => ['tag'],
+        ]);
 
         // when
         $controller->registerAction();
     }
 
-    public function testItFetchesParametersFromCLI()
+    public function testParametersFromCLIHaveGreaterPriorityInRegisterAction()
     {
         // given: ServiceDiscovery mock
         $discoveryService = $this->getMockBuilder(ServiceDiscovery::class)->getMock();
 
+        // config from application config
+        $config = [
+            'service_name' => 'ignored-service-name',
+            'service_id'   => 'ignored-id',
+            'consul'       => [
+                'check' => [
+                    'url'      => 'http://ignored-check/',
+                    'name'     => 'ignored-check',
+                    'interval' => '1s',
+                ],
+                'tags'  => ['ignored-tag'],
+            ],
+        ];
+
         // given: controller
-        $controller = new ConsulController([], $discoveryService);
+        $controller = new ConsulController($config, $discoveryService);
 
         // given: dispatch
         try {
             $controller->dispatch(new Request([
                 'public/index.php',
-                'id' => 'id',
-                'name' => 'service',
-                'check' => true,
-                'check-url' => 'http://check/',
+                'id'             => 'id',
+                'name'           => 'service',
+                'check'          => true,
+                'check-url'      => 'http://check/',
                 'check-interval' => '10m',
-                'check-name' => 'check',
-                'tags' => ['tag']
+                'check-name'     => 'check',
+                'tags'           => ['tag'],
             ]), new Response());
-        } catch (\Exception $exception) {}
+        } catch (\Exception $exception) {
+        }
 
         // expect
         $discoveryService->expects($this->once())
             ->method('register')
             ->with('service', [
-                'id' => 'id',
+                'id'    => 'id',
                 'check' => [
-                    'url' => 'http://check/',
-                    'name' => 'check',
-                    'interval' => '10m'
+                    'url'      => 'http://check/',
+                    'name'     => 'check',
+                    'interval' => '10m',
                 ],
-                'tags' => ['tag']
+                'tags'  => ['tag'],
             ]);
 
         // when
@@ -86,7 +118,7 @@ class ConsulControllerTest extends TestCase
         // config from application config
         $config = [
             'service_name' => 'service',
-            'service_id' => 'id',
+            'service_id'   => 'id',
         ];
 
         // given: controller
@@ -95,10 +127,37 @@ class ConsulControllerTest extends TestCase
         // given: dispatch
         try {
             $controller->dispatch(new Request(), new Response());
-        } catch (\Exception $exception) {}
+        } catch (\Exception $exception) {
+        }
 
         // expect
         $discoveryService->expects($this->once())->method('deregister')->with('id');
+
+        // when
+        $controller->deregisterAction();
+    }
+
+    public function testItFallsBackToServiceNameIfServiceIdIsNotGivenOnDeregisterAction()
+    {
+        // given: ServiceDiscovery mock
+        $discoveryService = $this->getMockBuilder(ServiceDiscovery::class)->getMock();
+
+        // config from application config
+        $config = [
+            'service_name' => 'service',
+        ];
+
+        // given: controller
+        $controller = new ConsulController($config, $discoveryService);
+
+        // given: dispatch
+        try {
+            $controller->dispatch(new Request(), new Response());
+        } catch (\Exception $exception) {
+        }
+
+        // expect
+        $discoveryService->expects($this->once())->method('deregister')->with('service');
 
         // when
         $controller->deregisterAction();

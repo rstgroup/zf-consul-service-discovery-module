@@ -89,7 +89,8 @@ final class ConsulController extends AbstractConsoleController
             throw new \RuntimeException("Consul Service Discovery controller is available only from CLI.");
         }
 
-        $serviceId = $request->getParam('id', $this->getFromConfig('service_id'));
+        $serviceId = $request->getParam('id', $this->getFromConfig('service_id')) ?: $this->getFromConfig('service_name');
+
 
         $this->serviceDiscoveryService->deregister($serviceId, []);
     }

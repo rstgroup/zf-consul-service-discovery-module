@@ -30,7 +30,7 @@ return [
             'routes' => [
                 'consul-sd-register'   => [
                     'options' => [
-                        'route'    => 'service-discovery consul register',
+                        'route'    => 'service-discovery consul register [--id=] [--name=] [--tags=] [--check] [--check-url=] [--check-name=] [--check-interval=]',
                         'defaults' => [
                             'controller' => \RstGroup\ZfConsulServiceDiscoveryModule\ServiceDiscovery\ConsulController::class,
                             'action'     => 'register',
@@ -39,7 +39,7 @@ return [
                 ],
                 'consul-sd-deregister' => [
                     'options' => [
-                        'route'    => 'service-discovery consul deregister',
+                        'route'    => 'service-discovery consul deregister [--id=]',
                         'defaults' => [
                             'controller' => \RstGroup\ZfConsulServiceDiscoveryModule\ServiceDiscovery\ConsulController::class,
                             'action'     => 'deregister',

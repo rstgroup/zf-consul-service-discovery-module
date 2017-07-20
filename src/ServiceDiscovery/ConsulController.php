@@ -58,8 +58,8 @@ final class ConsulController extends AbstractConsoleController
         $isCheck = $request->getParam('check', false);
 
         if ($isCheck) {
-            Assert::notNull($request->getParam('check-name'));
-            Assert::notNull($request->getParam('check-url'));
+            Assert::notNull($request->getParam('check-name'), 'Parameter check-name missing!');
+            Assert::notNull($request->getParam('check-url'), 'Parameter check-url missing!');
         }
 
         $check       = array_filter([

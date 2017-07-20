@@ -88,7 +88,7 @@ class ConsulControllerTest extends TestCase
                 'check-url'      => 'http://check/',
                 'check-interval' => '10m',
                 'check-name'     => 'check',
-                'tags'           => ['tag'],
+                'tags'           => 'tag,tag2,last-tag',
             ]), new Response());
         } catch (\Exception $exception) {
         }
@@ -103,7 +103,7 @@ class ConsulControllerTest extends TestCase
                     'name'     => 'check',
                     'interval' => '10m',
                 ],
-                'tags'  => ['tag'],
+                'tags'  => ['tag', 'tag2', 'last-tag'],
             ]);
 
         // when

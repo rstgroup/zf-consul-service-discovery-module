@@ -54,15 +54,16 @@ final class ConsulController extends AbstractConsoleController
         // fetch some params.. from request of from config :)
         $serviceId   = $request->getParam('id', $this->getFromConfig('service_id'));
         $serviceName = $request->getParam('name', $this->getFromConfig('service_name'));
-        $tags        = (array)$request->getParam('tags', $this->getFromConfig(['consul', 'tags']));
-        $isCheck = $request->getParam('check', false);
+        $tags        = (($cliTags = $request->getParam('tags', null)) ? explode(',', $cliTags) : null)
+            ?: $this->getFromConfig(['consul', 'tags']);
+        $isCheck     = $request->getParam('check', false);
 
         if ($isCheck) {
             Assert::notNull($request->getParam('check-name'), 'Parameter check-name missing!');
             Assert::notNull($request->getParam('check-url'), 'Parameter check-url missing!');
         }
 
-        $check       = array_filter([
+        $check = array_filter([
             'name'     => $request->getParam('check-name', $this->getFromConfig(['consul', 'check', 'name'])),
             'url'      => $request->getParam('check-url', $this->getFromConfig(['consul', 'check', 'url'])),
             'interval' => $request->getParam('check-interval', $this->getFromConfig(['consul', 'check', 'interval'])),

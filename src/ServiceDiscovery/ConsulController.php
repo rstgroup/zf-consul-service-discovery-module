@@ -51,6 +51,10 @@ final class ConsulController extends AbstractConsoleController
         /** @var Request $request */
         $request = $this->getRequest();
 
+        if (!$request instanceof Request) {
+            throw new \RuntimeException("Consul Service Discovery controller is available only from CLI.");
+        }
+
         // fetch some params.. from request of from config :)
         $serviceId   = $request->getParam('id', $this->getFromConfig('service_id'));
         $serviceName = $request->getParam('name', $this->getFromConfig('service_name'));
@@ -68,11 +72,6 @@ final class ConsulController extends AbstractConsoleController
             'url'      => $request->getParam('check-url', $this->getFromConfig(['consul', 'check', 'url'])),
             'interval' => $request->getParam('check-interval', $this->getFromConfig(['consul', 'check', 'interval'])),
         ]);
-
-
-        if (!$request instanceof Request) {
-            throw new \RuntimeException("Consul Service Discovery controller is available only from CLI.");
-        }
 
         $this->serviceDiscoveryService->register($serviceName, array_filter([
             'id'    => $serviceId,

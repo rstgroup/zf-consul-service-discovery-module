@@ -60,6 +60,25 @@ return [
             'service_id'   => 'my-service-1',
             'consul'       => [
                 'url' => 'http://consul-instance.loc:8500',
+                'check' => [
+                    'url' => 'http://my-service/check-endpoint',
+                    'name' => 'check-endpoint',
+                    'interval' => '30s',
+                ],
+            ],
+        ],
+    ],
+];
+```
+
+Minimal configuration:
+```php
+return [
+    'rst_group'       => [
+        'service_discovery' => [
+            'service_name' => 'my-service',
+            'consul'       => [
+                'url' => 'http://consul-instance.loc:8500',
             ],
         ],
     ],
@@ -68,7 +87,9 @@ return [
 
 > We suggest using `rstgroup/zf-external-config-module` to pass `rst_group.service_discovery.consul.url` key during
   the provisioning stage - as infrastructure configuration should not be stored in application's
-  repository.
+  repository. <br />
+  
+> If your service is about to be ran in many instances - then also its name should be passed during the provisioning state. 
 
 ## Usage
 
@@ -97,3 +118,32 @@ IN POST-uninstall stage:
     ```bash
     php public/index.php service-discovery consul deregister
     ```
+
+### Running commands with parameters
+`service-discovery consul register` command has defined set of optional attributes that allows you to override
+settings stored in your app's configuration. You can list the full usage information by simply typing:
+
+`php public/index.php`
+
+Here's the part that describes the `zf-consul-service-discovery-module`'s commands:
+
+```
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    RstGroup\ZfConsulServiceDiscoveryMod
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
+    ZF Service Discovery - Consul
+      index.php service-discovery consul register [--id=] [--name=] [--tags=] [--check] [--check-url=] [--check-name=] [--check-interval=]    Register service in Consul Agent's Service Discovery.                                       
+    
+      --id=               Override ID of service.                                                                                                                                                                                                               
+      --name=             Override name of service.                                                                                                                                                                                                             
+      --tags=             Override list of tags. Write tags as comma-separated list with no whitespaces.                                                                                                                                                                                            
+      --check             If flag is set, the check is expected to be defined.                                                                                                                                                                                  
+      --check-url         Override service's check URL                                                                                                                                                                                                          
+      --check-name        Override service's check name                                                                                                                                                                                                         
+      --check-interval    Override service's check interval                                                                                                                                                                                                     
+    
+      index.php service-discovery consul deregister [--id=]    Deregister service in Consul Agent' Service Discovery.                                                                                                                     
+    
+      --id=    Override ID of service. 
+```

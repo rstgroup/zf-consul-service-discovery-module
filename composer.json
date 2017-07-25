@@ -6,5 +6,46 @@
             "name": "Artur Wolny",
             "email": "artur.wolny@rst.com.pl"
         }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": "^5.6 || ^7.0",
+        "zendframework/zend-modulemanager": "^2",
+        "sensiolabs/consul-php-sdk": "dev-master",
+        "zendframework/zend-console": "^2.6",
+        "rstgroup/service-discovery": "dev-master",
+        "zendframework/zend-mvc-console": "^1.1",
+        "webmozart/assert": "^1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7"
+    },
+    "suggest": {
+        "rstgroup/zf-local-config-module": "To allow saving Consul URL in the configuration during postinstall stage."
+    },
+    "autoload": {
+        "psr-4": {
+            "RstGroup\\ZfConsulServiceDiscoveryModule\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "RstGroup\\ZfConsulServiceDiscoveryModule\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "unit-tests": "phpunit",
+        "unit-tests-coverage": "phpunit --coverage-html ./results"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/artospaj/consul-php-sdk"
+        },
+        {
+            "type": "vcs",
+            "url": "git@gitlab.trans-dev.loc:devops/service-discovery.git"
+        }
     ]
 }

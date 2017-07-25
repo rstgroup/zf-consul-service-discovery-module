@@ -1,6 +1,7 @@
 {
     "name": "rstgroup/zf-consul-service-discovery-module",
     "description": "Module for Zend Framework that allows to register the application in Consul's Service Discovery.",
+    "license": "MIT",
     "authors": [
         {
             "name": "Artur Wolny",
@@ -12,9 +13,9 @@
     "require": {
         "php": "^5.6 || ^7.0",
         "zendframework/zend-modulemanager": "^2",
-        "sensiolabs/consul-php-sdk": "dev-master",
+        "sensiolabs/consul-php-sdk": "^3",
         "zendframework/zend-console": "^2.6",
-        "rstgroup/service-discovery": "dev-master",
+        "rstgroup/service-discovery": "^1",
         "zendframework/zend-mvc-console": "^1.1",
         "webmozart/assert": "^1"
     },
@@ -37,15 +38,5 @@
     "scripts": {
         "unit-tests": "phpunit",
         "unit-tests-coverage": "phpunit --coverage-html ./results"
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/artospaj/consul-php-sdk"
-        },
-        {
-            "type": "vcs",
-            "url": "git@gitlab.trans-dev.loc:devops/service-discovery.git"
-        }
-    ]
+    }
 }

@@ -8,8 +8,6 @@
             "email": "artur.wolny@rst.com.pl"
         }
     ],
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "require": {
         "php": "^5.6 || ^7.0",
         "zendframework/zend-modulemanager": "^2",

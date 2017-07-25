@@ -3,6 +3,8 @@
 This module provides logic that allows the application to register itself in
 Consul's Service Discovery.
 
+[![Build Status](https://travis-ci.org/rstgroup/zf-consul-service-discovery-module.svg?branch=master)](https://travis-ci.org/rstgroup/zf-consul-service-discovery-module)
+
 ## Requirements
 
 1. PHP: 5.6 or 7.X
@@ -11,26 +13,13 @@ Consul's Service Discovery.
 
 ## Installation
 
-You have to add the repository to your `composer.json` file:
-
-```json
-{
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@gitlab.trans-dev.loc:devops/zf-consul-service-discovery-module.git"
-        }
-    ]
-}
-```
-
-...and require module with Composer:
+Require module with Composer:
 
 ```bash
 composer require rstgroup/zf-consul-service-discovery-module
 ```
 
-The last step is adding module to ZF system configuration (`config/application.config.php`):
+The next step is adding module to ZF system configuration (`config/application.config.php`):
 ```php
 return [
     'modules' => [
@@ -41,7 +30,7 @@ return [
 ]
 ```
 
-.. and (optionally, but we strongly suggest it) - [install `rstgroup/zf-local-config-module`](https://gitlab.trans-dev.loc/devops/zf-local-config-module/blob/master/README.md#installation).
+.. and (optionally, but we strongly suggest it) - [install `rstgroup/zf-local-config-module`](https://packagist.org/packages/rstgroup/zf-local-config-module).
 
 ## Configuration
 
@@ -65,6 +54,7 @@ return [
                     'name' => 'check-endpoint',
                     'interval' => '30s',
                 ],
+                'tags' => [ 'service', 'httpd', 'php' ],
             ],
         ],
     ],

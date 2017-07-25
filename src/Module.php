@@ -28,8 +28,18 @@ final class Module implements ConfigProviderInterface, ConsoleUsageProviderInter
     {
         return [
             'ZF Service Discovery - Consul',
-            'service-discovery consul register' => 'Register service in Consul Agent\'s Service Discovery.',
-            'service-discovery consul deregister' => 'Deregister service in Consul Agent\' Service Discovery.',
+            'service-discovery consul register [--id=] [--name=] [--tags=] [--check] [--check-url=] [--check-name=] [--check-interval=]' =>
+                'Register service in Consul Agent\'s Service Discovery.',
+            ['--id=', 'Override ID of service.'],
+            ['--name=', 'Override name of service.'],
+            ['--tags=', 'Override list of tags. Write tags as comma-separated list with no whitespaces.'],
+            ['--check=', 'If flag is set, the check is expected to be defined.'],
+            ['--check-url=', 'Override service\'s check URL'],
+            ['--check-name=', 'Override service\'s check name'],
+            ['--check-interval=', 'Override service\'s check interval'],
+            'service-discovery consul deregister [--id=]' =>
+                'Deregister service in Consul Agent\' Service Discovery.',
+            ['--id=', 'Override ID of service.'],
         ];
     }
 }

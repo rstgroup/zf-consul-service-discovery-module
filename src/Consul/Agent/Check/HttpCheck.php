@@ -5,10 +5,13 @@ namespace RstGroup\ZfConsulServiceDiscoveryModule\Consul\Agent\Check;
 
 
 use RstGroup\ZfConsulServiceDiscoveryModule\Consul\Agent\CheckInterface;
+use Webmozart\Assert\Assert;
 
 
 final class HttpCheck implements CheckInterface
 {
+    const DEFAULT_INTERVAL = '1m';
+
     /** @var string */
     private $name;
     /** @var string */
@@ -23,13 +26,29 @@ final class HttpCheck implements CheckInterface
      *
      * @throws \InvalidArgumentException when given interval is invalid
      */
-    public function __construct($name, $url, $interval = '1m')
+    public function __construct($name, $url, $interval = self::DEFAULT_INTERVAL)
     {
         $this->validateInterval($interval);
 
         $this->name     = $name;
         $this->url      = $url;
         $this->interval = $interval;
+    }
+
+    /**
+     * @param array $params
+     * @return HttpCheck
+     */
+    public static function createFromArray(array $params)
+    {
+        Assert::keyExists($params, 'name');
+        Assert::keyExists($params, 'url');
+
+        return new self(
+            $params['name'],
+            $params['url'],
+            isset($params['interval']) ? $params['interval'] : static::DEFAULT_INTERVAL
+        );
     }
 
     /** @return array */

@@ -6,6 +6,7 @@ namespace RstGroup\ZfConsulServiceDiscoveryModule\Consul;
 
 use RstGroup\ServiceDiscovery\Exception\ServiceDiscoveryException;
 use RstGroup\ServiceDiscovery\ServiceDiscovery;
+use RstGroup\ZfConsulServiceDiscoveryModule\Consul\Agent\Check\HttpCheck;
 use RstGroup\ZfConsulServiceDiscoveryModule\Consul\Agent\Service;
 use SensioLabs\Consul\Services\AgentInterface;
 
@@ -21,17 +22,23 @@ final class ServiceDiscoveryService implements ServiceDiscovery
 
     /**
      * @param string $serviceName Consul requires the service name
-     * @param        array        (
-     *      'id'    (optional) service ID; if not given - the serviceName becomes ID
-     * ) $options
+     * @param array  $options     list of additional options:
+     *                            string 'id' (optional)
+     *                            string[] 'tags' (optional)
+     *                            array 'check' (optional) check definition
      *
-     * @return mixed
+     * @return string
      *
      * @throws ServiceDiscoveryException
      */
     public function register($serviceName, array $options = [])
     {
-        $service = new Service($serviceName, $options['id'] ?: '');
+        $service = new Service(
+            $serviceName,
+            isset($options['id']) ? $options['id'] : '',
+            isset($options['tags']) ? $options['tags'] : [],
+            isset($options['check']) ? HttpCheck::createFromArray($options['check']) : null
+        );
 
         try {
             $this->consulAgent->registerService($service->getDefinition());
